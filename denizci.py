@@ -4,13 +4,12 @@ from streamlit_folium import st_folium
 import pandas as pd
 import math
 
-# --- 1. SAYFA AYARLARI ---
+
 st.set_page_config(layout="wide", page_title="Türkiye Hibrit Atlası")
 
-# --- 2. VERİ TABANI (Detaylı) ---
 veriler = {
     "Denizler": [
-        # [İsim, Enlem, Boylam, Sıcaklık, Derinlik]
+      
         ["Artvin / Hopa", 41.40, 41.42, 15.5, 2212],
         ["Trabzon Limanı", 41.01, 39.75, 15.8, 2212],
         ["Sinop Limanı", 42.02, 35.15, 14.9, 2212],
@@ -28,7 +27,7 @@ veriler = {
         ["KKTC / Girne", 35.34, 33.32, 25.5, 200]
     ],
     "Dağlar": [
-        # [İsim, Enlem, Boylam, Yükseklik]
+        
         ["Ağrı Dağı", 39.70, 44.29, 5137],
         ["Erciyes Dağı", 38.54, 35.45, 3917],
         ["Uludağ", 40.06, 29.22, 2543],
@@ -36,28 +35,28 @@ veriler = {
         ["Kaçkar Dağı", 40.83, 41.16, 3932]
     ],
     "Göller": [
-        # [İsim, Enlem, Boylam, Özellik]
+        
         ["Van Gölü", 38.62, 42.90, "Sodalı / En Büyük"],
         ["Tuz Gölü", 38.83, 33.33, "Tuzlu"],
         ["Salda Gölü", 37.55, 29.67, "Tatlı / Turistik"],
         ["Abant Gölü", 40.60, 31.27, "Tatlı / Tabiat Parkı"]
     ],
     "Tarihi Yerler": [
-        # [İsim, Enlem, Boylam, Bilgi]
+    
         ["Göbeklitepe", 37.22, 38.92, "Tarihin Sıfır Noktası"],
         ["Efes Antik Kenti", 37.94, 27.34, "Antik Roma Başkenti"],
         ["Anıtkabir", 39.92, 32.83, "Ulu Önder'in Kabri"]
     ]
 }
 
-# Veri Birleştirme
+
 tum_veriler = []
 for kat, liste in veriler.items():
     for i in liste:
         tum_veriler.append({"İsim": i[0], "Enlem": i[1], "Boylam": i[2], "Kategori": kat})
 df_all = pd.DataFrame(tum_veriler)
 
-# --- 3. FONKSİYONLAR ---
+
 def mesafe_hesapla(lat1, lon1, lat2, lon2):
     R = 6371
     dlat = math.radians(lat2 - lat1)
@@ -75,10 +74,8 @@ mod = st.sidebar.radio("Mod Seçiniz:",
 
 st.title(f"Mod: {mod}")
 
-# ==========================================
-# MOD 1: HARİTA KEŞFİ (DETAYLAR GERİ GELDİ! ✅)
-# ==========================================
-if mod == "🗺️ Harita Keşfi":
+
+if mod == " Harita Keşfi":
     katman = st.selectbox("Görünüm:", ["Sokak", "Uydu", "Karanlık"])
     m = folium.Map(location=[39.0, 35.0], zoom_start=6)
     
@@ -88,19 +85,19 @@ if mod == "🗺️ Harita Keşfi":
     for kat, liste in veriler.items():
         for item in liste:
             isim, lat, lon = item[0], item[1], item[2]
-            detay = item[3] # 4. eleman (Sıcaklık/Yükseklik/Tür/Bilgi)
+            detay = item[3] 
             
-            # Kategorilere göre ÖZEL ayarlar
+         
             if kat == "Denizler":
-                derinlik = item[4] # Denizlerde 5. eleman derinliktir
+                derinlik = item[4] 
                 sicaklik = detay
                 
-                # Sıcaklığa göre renk
+              
                 if sicaklik >= 24: color, icon = "red", "fire"
                 elif sicaklik >= 20: color, icon = "orange", "thumbs-up"
                 else: color, icon = "blue", "anchor"
                 
-                # DETAYLI POPUP
+              
                 popup_text = f"<b>{isim}</b><br>🌡️ {sicaklik}°C<br>📉 Derinlik: {derinlik}m"
 
             elif kat == "Dağlar":
@@ -115,12 +112,12 @@ if mod == "🗺️ Harita Keşfi":
                 color, icon = "cadetblue", "tint"
                 popup_text = f"<b>{isim}</b><br>💧 Özellik: {tur}"
 
-            else: # Tarih
+            else: 
                 bilgi = detay
                 color, icon = "purple", "camera"
                 popup_text = f"<b>{isim}</b><br>🏛️ {bilgi}"
 
-            # Haritaya Ekle
+            
             folium.Marker(
                 [lat, lon], 
                 popup=popup_text, 
@@ -130,9 +127,7 @@ if mod == "🗺️ Harita Keşfi":
     
     st_folium(m, width=1000, height=500)
 
-# ==========================================
-# MOD 2: KARA YOLU & YAKIT (HAFIZALI 🧠)
-# ==========================================
+
 elif mod == "🚗 Kara Yolu (Yakıt)":
     if 'kara_sonuc' not in st.session_state: st.session_state['kara_sonuc'] = None
 
@@ -174,10 +169,8 @@ elif mod == "🚗 Kara Yolu (Yakıt)":
         col_b.metric("Yakıt", f"{res['litre']:.1f} Litre")
         col_c.metric("Tutar", f"{res['tl']} TL")
 
-# ==========================================
-# MOD 3: DENİZ YOLU & SEYİR (HAFIZALI 🧠)
-# ==========================================
-elif mod == "🚢 Deniz Yolu (Seyir)":
+
+elif mod == " Deniz Yolu (Seyir)":
     if 'deniz_sonuc' not in st.session_state: st.session_state['deniz_sonuc'] = None
 
     st.info("Tekneyle iki liman arasındaki seyir süresini hesaplayın.")
@@ -190,7 +183,7 @@ elif mod == "🚢 Deniz Yolu (Seyir)":
     st.markdown("---")
     hiz_knot = st.number_input("Tekne Hızı (Knot):", 5.0, 50.0, 15.0)
     
-    if st.button("Seyir Planı Oluştur 🧭"):
+    if st.button("Seyir Planı Oluştur "):
         if baslangic == bitis:
             st.warning("Aynı limandasınız!")
         else:
@@ -222,9 +215,6 @@ elif mod == "🚢 Deniz Yolu (Seyir)":
         folium.PolyLine([(d_res['p1']["Enlem"], d_res['p1']["Boylam"]), (d_res['p2']["Enlem"], d_res['p2']["Boylam"])], color="blue", weight=3, dash_array='10').add_to(m_rota)
         st_folium(m_rota, width=1000, height=450)
 
-# ==========================================
-# MOD 4: ANALİZ
-# ==========================================
 elif mod == "⚖️ Dağ vs Deniz Analizi":
     st.write("Simülasyon Modu: Dağları denizlere batırıyoruz.")
     dag_sec = st.selectbox("Dağ:", [d[0] for d in veriler["Dağlar"]])
@@ -239,4 +229,5 @@ elif mod == "⚖️ Dağ vs Deniz Analizi":
         
         st.bar_chart(pd.DataFrame({"Metre": [yuk, -der]}, index=[dag_sec, deniz_sec]))
         if fark > 0: st.success(f"Sonuç: **{dag_sec}**, **{fark}m** farkla su üstünde kalır! 🏝️")
+
         else: st.error(f"Sonuç: **{dag_sec}** tamamen batar! 🌊")
