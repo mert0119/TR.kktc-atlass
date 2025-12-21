@@ -38,7 +38,7 @@ veriler = {
         
         ["Van Gölü", 38.62, 42.90, "Sodalı / En Büyük"],
         ["Tuz Gölü", 38.83, 33.33, "Tuzlu"],
-        ["Salda Gölü", 37.55, 29.67, "Tatlı / Turistik"],
+        ["salda Gölü", 37.55, 29.67, "Tatlı / Turistik"],
         ["Abant Gölü", 40.60, 31.27, "Tatlı / Tabiat Parkı"]
     ],
     "Tarihi Yerler": [
@@ -231,3 +231,4 @@ elif mod == "⚖️ Dağ vs Deniz Analizi":
         if fark > 0: st.success(f"Sonuç: **{dag_sec}**, **{fark}m** farkla su üstünde kalır! 🏝️")
 
         else: st.error(f"Sonuç: **{dag_sec}** tamamen batar! 🌊")
+
