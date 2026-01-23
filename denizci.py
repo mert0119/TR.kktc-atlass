@@ -3,8 +3,7 @@ import folium
 from streamlit_folium import st_folium
 import pandas as pd
 import math
-
-
+ 
 st.set_page_config(layout="wide", page_title="Türkiye Hibrit Atlası")
 
 veriler = {
@@ -231,4 +230,5 @@ elif mod == "⚖️ Dağ vs Deniz Analizi":
         if fark > 0: st.success(f"Sonuç: **{dag_sec}**, **{fark}m** farkla su üstünde kalır! 🏝️")
 
         else: st.error(f"Sonuç: **{dag_sec}** tamamen batar! 🌊")
+
 
