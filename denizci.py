@@ -232,3 +232,4 @@ elif mod == "⚖️ Dağ vs Deniz Analizi":
         else: st.error(f"Sonuç: **{dag_sec}** tamamen batar! 🌊")
 
 
+
